@@ -261,7 +261,7 @@ export default class Graph extends React.Component {
     /**
      * Sorts by dividing array recursively into lesser arrays until all values are in individual arrays.
      * Then, compares all values and rejoins arrays into larger arrays.
-     * [3 1 4 5 2]
+     * @example [3 1 4 5 2]
      * [3 1 4] [5 2]
      * [3 1] [4] [5] [2]
      * [3] [1] [4] [5] [2]
@@ -271,7 +271,7 @@ export default class Graph extends React.Component {
      * 
      * (NOTE: THE ACTUAL ALGORITHM RELIES ON RECURSION! THIS ALGORITHM HAS BEEN MODIFIED FOR DEMONSTRATIONAL PURPOSES.)
      */
-    MergeSort = async (arr, stage) => {
+    /*MergeSort = async (arr, stage) => {
         this.MergeSort_Breakdown(arr, stage);
         await this.Delay(3000);
         console.log(this.state.tempStateArr);
@@ -373,7 +373,7 @@ export default class Graph extends React.Component {
         this.props.onChangeSwapCount(swapCount++);
         await this.Delay();
         return sortedArray;*/
-    }
+    /*}*/
 
     /**
      * Sorts by taking each element, comparing to all elements, and selecting the minimum value.
