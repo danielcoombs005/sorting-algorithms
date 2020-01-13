@@ -158,6 +158,9 @@ export default class Graph extends React.Component {
             case 'Bubble Sort':
                 this.BubbleSort();
                 break;
+            case 'Cocktail Sort':
+                this.CocktailSort();
+                break;
             case 'Insertion Sort':
                 this.InsertionSort();
                 break;
@@ -173,7 +176,7 @@ export default class Graph extends React.Component {
         }
     }
 
-    SortOnce = () => {
+    /*SortOnce = () => {
         switch (this.props.sortName) {
             case 'Bubble Sort':
                 this.BubbleSortOnce();
@@ -185,7 +188,7 @@ export default class Graph extends React.Component {
             default:
                 break;
         }
-    }
+    }*/
 
     /**
     * Sorts by swapping any consecutive pairs if the first value is greater than second value.
@@ -216,6 +219,61 @@ export default class Graph extends React.Component {
                 this.UpdateComparedCount(comparedCount++);
             }
             if (isSorted) break;
+        }
+        this.CompleteChangeColor(arr, '#00ff00');
+    }
+
+    /**
+     * Sorts by swapping any consecutive pairs if the first value is greater than the second value.
+     * Similar to Bubble Sort, but compares in both a forwards and backwards pass, whereas bubble sort only compares in a forward pass.
+     * [2 4 3 1]
+     * [2 4 3 1] 4 > 2
+     * [2 3 4 1] 4 > 3
+     * [2 3 1 4] 4 > 1
+     * [2 1 3 4] 1 < 3 (in reverse direction)
+     * [1 2 3 4] 1 < 2
+     */
+    CocktailSort = async (arr = this.props.barArr) => { //TO UPDATE: CHECK FOR MIN/MAX VALUE TO DETERMINE WHAT LEFTEND/RIGHTEND WILL BE NEXT
+        let timerStart = new Date();
+        let swapCount = 1;
+        let comparedCount = 1;
+        const size = arr.length;
+        let isSorted = false;
+        let leftEnd = 0;
+        let rightEnd = size - 1;
+        let minIndex = 0;
+        let maxIndex = 0;
+        for (let j = 0; j < size - 1; j++) {
+            isSorted = true;
+            for (let i = leftEnd; i < rightEnd; i++) {
+                this.ChangeColor(i, i+1, 'red');
+                await this.Delay();
+                if (arr[i] > arr[i + 1]) {
+                    isSorted = false;
+                    this.SortActions(i, i+1, arr, timerStart, swapCount++);
+                    await this.Delay();
+                    maxIndex = i;
+                }
+                this.ChangeColor(i, i+1, '#3399FF');
+                this.UpdateComparedCount(comparedCount++);
+            }
+            if (isSorted) break;
+            rightEnd = maxIndex;
+            isSorted = true;
+            for (let i = rightEnd; i > leftEnd; i--) {
+                this.ChangeColor(i, i-1, 'red');
+                await this.Delay();
+                if (arr[i - 1] > arr[i]) {
+                    isSorted = false;
+                    this.SortActions(i, i-1, arr, timerStart, swapCount++);
+                    await this.Delay();
+                    minIndex = i;
+                }
+                this.ChangeColor(i, i-1, '#3399FF');
+                this.UpdateComparedCount(comparedCount++);
+            }
+            if (isSorted) break;
+            leftEnd = minIndex;
         }
         this.CompleteChangeColor(arr, '#00ff00');
     }

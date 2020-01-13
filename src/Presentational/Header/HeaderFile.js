@@ -27,6 +27,7 @@ class HeaderFile extends React.Component {
                     <div style={{ display: 'inline' }}>
                         <select onChange={this.onSelectSort} value={this.props.sortName}>
                             <option value='Bubble Sort'>Bubble Sort</option>
+                            <option value='Cocktail Sort'>Cocktail Sort</option>
                             <option value='Insertion Sort'>Insertion Sort</option>
                             {/*<option value='Merge Sort'>Merge Sort</option>*/}
                             <option value='Selection Sort'>Selection Sort</option>
