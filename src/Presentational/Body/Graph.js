@@ -225,7 +225,7 @@ export default class Graph extends React.Component {
 
     /**
      * Sorts by swapping any consecutive pairs if the first value is greater than the second value.
-     * Similar to Bubble Sort, but compares in both a forwards and backwards pass, whereas bubble sort only compares in a forward pass.
+     * Similar to Bubble Sort, but compares in both a forwards and backwards pass, whereas Bubble Sort only compares in a forward pass.
      * [2 4 3 1]
      * [2 4 3 1] 4 > 2
      * [2 3 4 1] 4 > 3
@@ -233,7 +233,7 @@ export default class Graph extends React.Component {
      * [2 1 3 4] 1 < 3 (in reverse direction)
      * [1 2 3 4] 1 < 2
      */
-    CocktailSort = async (arr = this.props.barArr) => { //TO UPDATE: CHECK FOR MIN/MAX VALUE TO DETERMINE WHAT LEFTEND/RIGHTEND WILL BE NEXT
+    CocktailSort = async (arr = this.props.barArr) => {
         let timerStart = new Date();
         let swapCount = 1;
         let comparedCount = 1;
