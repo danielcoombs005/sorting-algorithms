@@ -119,7 +119,7 @@ export default class Graph extends React.Component {
     SortActions = async (val1, val2, arr, timerStart, swapCount) => {
         this.Swap(val1, val2, arr);
         this.UpdateTimer(timerStart);
-        this.props.onChangeSwapCount(swapCount);
+        this.UpdateSwapCount(swapCount);
     }
 
     /**
@@ -143,6 +143,14 @@ export default class Graph extends React.Component {
     }
 
     /**
+     * Calls to update swap count.
+     */
+    UpdateSwapCount = (swapCount) => {
+        swapCount++;
+        this.props.onChangeSwapCount(swapCount);
+    }
+
+    /**
      * Updates time passed for sort.
      */
     UpdateTimer = (timerStart) => {
@@ -160,6 +168,9 @@ export default class Graph extends React.Component {
                 break;
             case 'Cocktail Sort':
                 this.CocktailSort();
+                break;
+            case 'Heapsort':
+                this.HeapSort();
                 break;
             case 'Insertion Sort':
                 this.InsertionSort();
@@ -200,7 +211,7 @@ export default class Graph extends React.Component {
     */
     BubbleSort = async () => {
         let timerStart = new Date();
-        let swapCount = 1;
+        let swapCount = 0;
         let comparedCount = 1;
         let arr = this.props.barArr;
         const size = arr.length;
@@ -233,9 +244,9 @@ export default class Graph extends React.Component {
      * [2 1 3 4] 1 < 3 (in reverse direction)
      * [1 2 3 4] 1 < 2
      */
-    CocktailSort = async (arr = this.props.barArr) => { //TO UPDATE: CHECK FOR MIN/MAX VALUE TO DETERMINE WHAT LEFTEND/RIGHTEND WILL BE NEXT
+    CocktailSort = async (arr = this.props.barArr) => {
         let timerStart = new Date();
-        let swapCount = 1;
+        let swapCount = 0;
         let comparedCount = 1;
         const size = arr.length;
         let isSorted = false;
@@ -276,6 +287,99 @@ export default class Graph extends React.Component {
             leftEnd = minIndex;
         }
         this.CompleteChangeColor(arr, '#00ff00');
+    }
+
+    /**
+     * Sorts by converting array to a (perfect) binary tree and moving any larger nodes upwards to the top of the tree.
+     * Once at the top, replaces the last index and repeats the process.
+     * [2 7 1 4 3 6 5]
+     * [2 7 6 4 3 1 5] -> compare 1 (top) to 6 (left) and 5 (right)
+     * [2 7 6 4 3 1 5] -> compare 7 (top) to 4 (left) and 3 (right)
+     * [7 2 6 4 3 1 5] -> compare 2 (top) to 7 (left) and 6 (right)
+     * [7 4 6 2 3 1 5] -> compare 2 (top) to 4 (left) and 3 (right)
+     * [5 4 6 2 3 1 7] -> swap 7 (largest) and 5 (current last index)
+     * Code from https://algorithms.tutorialhorizon.com/heap-sort-java-implementation/
+     */
+    HeapSort = async (arr = this.props.barArr) => { //SWAP COUNT NEEDS TO BE FIXED, COMPARISON NEEDS TO BE ADDED
+        let timerStart = new Date();
+        let swapCount = 0;
+        let comparedCount = 1;
+        let size = arr.length;
+
+        //builds heap
+        for (let i = size / 2 - 1; i >= 0; i--) {
+            await this.heapify(arr, size, i, timerStart, 0/*swapCount*/);
+        }
+
+        //sorts largest piece to current end and rebuilds heap
+        for (let i = size - 1; i >= 0; i--) {
+            this.ChangeColor(i, 0, 'red');
+            await this.Delay();
+            this.SortActions(i, 0, arr, timerStart, swapCount++);
+            await this.Delay();
+            this.ChangeColor(i, 0, '#3399FF');
+            await this.heapify(arr, i, 0, timerStart, swapCount);
+        }
+
+        this.CompleteChangeColor(arr, '#00ff00');
+    }
+
+    /**
+     * organizes array collection into a heap to prepare the current largest element
+     */
+    heapify = async (arr, size, i, timerStart, swapCount) => {
+        let largest = i;
+        let left = 2*i + 1;
+        let right = 2*i + 2;
+
+        //change color to show focus of up to three bars
+        this.ChangeColorSingle(i, 'blue');
+        if (left < size) {
+            this.ChangeColorSingle(left, 'red');
+        }
+        if (right < size) {
+            this.ChangeColorSingle(right, 'red');
+        }
+
+        //check for largest size, written to accomodate animation
+        swapCount++;
+        if (left < size && right < size) {
+            if (arr[left] > arr[largest] && arr[right] > arr[largest]) {
+                await this.Delay();
+                const colorRemove = arr[left] > arr[right] ? right : left;
+                this.ChangeColorSingle(colorRemove, '#3399FF');
+                await this.Delay();
+                largest = arr[left] > arr[right] ? left : right;
+            } else if (arr[left] > arr[largest]) {
+                await this.Delay();
+                largest = left;
+            } else if (arr[right] > arr[largest]) {
+                await this.Delay();
+                largest = right;
+            } else { 
+                swapCount--;
+            }
+        } else if (left < size) {
+            if (arr[left] > arr[largest]) {
+                await this.Delay();
+                largest = left;
+            }
+        } else { swapCount--; }
+
+        //swaps head value with largest value if head value is not the largest
+        if (largest !== i) {
+            this.SortActions(i, largest, arr, timerStart, swapCount++);
+            await this.props.onChangeSwapCount(swapCount);
+            await this.Delay();
+
+            this.ChangeColorSingle(i, '#3399FF');
+            if (left < size) this.ChangeColorSingle(left, '#3399FF');
+            if (right < size) this.ChangeColorSingle(right, '#3399FF');
+            await this.heapify(arr, size, largest);
+        }
+        this.ChangeColorSingle(i, '#3399FF');
+        if (left < size) this.ChangeColorSingle(left, '#3399FF');
+        if (right < size) this.ChangeColorSingle(right, '#3399FF');
     }
 
     /**
