@@ -45,7 +45,9 @@ class App extends React.Component {
   }
 
   onChangeComparisonCount = (num) => {
-    this.setState({ compared: num })
+    if (!isNaN(num)) {
+      this.setState({ compared: num });
+    }
   }
   
   onChangeSpeed = (num) => {
@@ -53,11 +55,15 @@ class App extends React.Component {
   }
 
   onChangeSwapCount = (num) => {
-    this.setState({ swaps: num});
+    if (!isNaN(num)) {
+      this.setState({ swaps: num});
+    }
   }
 
   onChangeTimer = (num) => {
-    this.setState({ time: num });
+    if (!isNaN(num)) {
+      this.setState({ time: num });
+    }
   }
 
   onSelectSort = (val) => {
