@@ -236,7 +236,7 @@ export default class Graph extends React.Component {
 
     /**
      * Sorts by swapping any consecutive pairs if the first value is greater than the second value.
-     * Similar to Bubble Sort, but compares in both a forwards and backwards pass, whereas bubble sort only compares in a forward pass.
+     * Similar to Bubble Sort, but compares in both a forwards and backwards pass, whereas Bubble Sort only compares in a forward pass.
      * [2 4 3 1]
      * [2 4 3 1] 4 > 2
      * [2 3 4 1] 4 > 3
