@@ -4,6 +4,10 @@
     position: relative;
 }
 
+.bottom {
+    display: flex;
+}
+
 .graph {
     align-items: flex-end;
     background-color: lightgray;
@@ -14,4 +18,23 @@
     max-height: 402px;
     vertical-align: bottom;
     width: 100%;
+}
+
+.info {
+    background-color: #99FFFF;
+    border: 1px solid lightgray;
+    height: 210px;
+    left: 10%;
+    position: relative;
+    right: 10%;
+    width: 49.75%;
+}
+
+.sort {
+    background-color: lightcyan;
+    border: 1px solid lightgray;
+    height: 210px;
+    left: 10%;
+    position: relative;
+    width: 30%;
 }
