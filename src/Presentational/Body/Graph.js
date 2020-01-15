@@ -1,4 +1,5 @@
 import React from 'react';
+import Description from './Description';
 import './../Styles/Graph.css';
 
 export default class Graph extends React.Component {
@@ -47,13 +48,20 @@ export default class Graph extends React.Component {
         return (
             <div>
                 <this.SingleGraph />
-                <p>{this.props.sortName}</p>
-                <button onClick={this.Shuffle}>Shuffle</button>
-                <button onClick={this.Sort}>Sort</button>
-                {/*<button style={{ display: isVisible }} onClick={this.SortOnce}>Sort Once</button>*/}
-                <p>Sorted in {this.props.time} seconds.</p>
-                <p>Sorted in {this.props.swaps} swaps.</p>
-                <p>Compared {this.props.compared} values.</p>
+                <div className='bottom'>
+                    <div className='sort'>
+                        <p>{this.props.sortName}</p>
+                        <button onClick={this.Shuffle}>Shuffle</button>
+                        <button onClick={this.Sort}>Sort</button>
+                        {/*<button style={{ display: isVisible }} onClick={this.SortOnce}>Sort Once</button>*/}
+                        <p>Sorted in {this.props.time} seconds.</p>
+                        <p>Sorted in {this.props.swaps} swaps.</p>
+                        <p>Compared {this.props.compared} values.</p>
+                    </div>
+                    <div className='info'>
+                        <Description sortType={this.props.sortName} />
+                    </div>
+                </div>
             </div>
         )
     }
@@ -180,8 +188,10 @@ export default class Graph extends React.Component {
                 this.MergeSort(this.props.barArr, 0);
             case 'Selection Sort':
                 this.SelectionSort();
+                break;
             case 'Shell Sort':
                 this.ShellSort();
+                break;
             default:
                 break;
         }
