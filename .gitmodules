@@ -1,3 +1,3 @@
-[submodule "dist"]
-    path = dist
-    url = https://github.com/danielcoombs005/sorting-algorithms
+[submodule "src"]
+    path = src
+    url = https://github.com/danielcoombs005/sorting-algorithms.git
